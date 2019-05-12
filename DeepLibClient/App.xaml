@@ -8,7 +8,7 @@
         <SolidColorBrush x:Key="MenuBarBackgroundColorBrush" Color="#FFE7392C"/>
         <SolidColorBrush x:Key="MenuBarActiveControlColorBrush" Color="#FFBF5353"/>
         <SolidColorBrush x:Key="MenuBorderColorBrush" Color="#FF8B8484"/>
-        <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656261"/>
+        <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656262"/>
         <SolidColorBrush x:Key="MenuListColorBrush" Color="Black"/>
         <SolidColorBrush x:Key="MenuActiveListColorBrush" Color="#FF3A96B9"/>
     </Application.Resources>
