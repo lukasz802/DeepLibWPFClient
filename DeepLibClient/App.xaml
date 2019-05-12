@@ -1,0 +1,15 @@
+﻿<Application x:Class="DeepLibClient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DeepLibClient"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="MenuBackgroundColorBrush" Color="{x:Static SystemColors.ControlLightLightColor}"/>
+        <SolidColorBrush x:Key="MenuBarBackgroundColorBrush" Color="#FFE7392C"/>
+        <SolidColorBrush x:Key="MenuBarActiveControlColorBrush" Color="#FFBF5353"/>
+        <SolidColorBrush x:Key="MenuBorderColorBrush" Color="#FF8B8484"/>
+        <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656262"/>
+        <SolidColorBrush x:Key="MenuListColorBrush" Color="Black"/>
+        <SolidColorBrush x:Key="MenuActiveListColorBrush" Color="#FF3A96B9"/>
+    </Application.Resources>
+</Application>

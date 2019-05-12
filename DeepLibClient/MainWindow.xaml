@@ -1,0 +1,772 @@
+﻿<Window x:Class="DeepLibClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeepLibClient"
+        mc:Ignorable="d" SnapsToDevicePixels="True" 
+        FontFamily="/Fonts/RobotoCondensed-Light.ttf #Roboto Light"
+        Title="DeepLIB" MinHeight="480" MinWidth="800"
+        Height="600" Width="1000" x:Name="mainWindow">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="45"
+                                  CornerRadius="0"
+                                  GlassFrameThickness="0"
+                                  NonClientFrameEdges="None"
+                                  ResizeBorderThickness="5"
+                                  UseAeroCaptionButtons="False"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="{StaticResource MenuBarBackgroundColorBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF7F7F7" Offset="0"/>
+                        <GradientStop Color="#FFF0EEEE" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Window">
+                        <Border TextOptions.TextRenderingMode="ClearType"
+                                RenderOptions.BitmapScalingMode="HighQuality" 
+                                RenderOptions.ClearTypeHint="Enabled"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <AdornerDecorator>
+                                <ContentPresenter/>
+                            </AdornerDecorator>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="WindowState" Value="Maximized">
+                    <Setter Property="Padding" Value="7"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+    <Window.Resources>
+        <Style x:Key="MainRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="0" 
+                                Name="Panel">
+                            <StackPanel Name="ContentStackPanel" Background="Transparent"
+                                        Orientation="Horizontal">
+                                <Rectangle Name="Rectangle" Fill="Transparent" StrokeThickness="0"
+                                           Width="3.5"/>
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Content="{TemplateBinding Content}"
+                                                  Margin="6,6,12,6"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource MenuActiveListColorBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ContentStackPanel" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FFCAC7C7"
+                                                         Opacity="0.85"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ContentStackPanel" Property="Background" Value="#FFB1AFAF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SortContentButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#FF68A6BD"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="Panel" BorderThickness="0">
+                            <Grid Name="ContentGrid">
+                                <ContentPresenter VerticalAlignment="Top"
+                                                  HorizontalAlignment="Center"
+                                                  Content="{TemplateBinding Content}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FF68A6BD"
+                                             Opacity="0.5"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="MenuBarControlButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="0,0.5,0,0"/>
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="0"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch"
+                                Name="Panel">
+                            <StackPanel Name="ContentStackPanel"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Content="{TemplateBinding Content}"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource MenuBarActiveControlColorBrush}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FFA34747"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="FlatComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                                          Focusable="False"
+                                          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Name="Border" BorderBrush="{StaticResource MenuBorderColorBrush}"
+                                                BorderThickness="0.5" Background="{StaticResource MenuBackgroundColorBrush}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="20"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Viewbox Grid.Column="1" Margin="6.5,0,6.5,4">
+                                                    <Path Stroke="{StaticResource MenuContainerForegroundColorBrush}"
+                                                          StrokeThickness="0.75" StrokeLineJoin="Round"
+                                                          Data="M5,3L2.5,6L0,3"
+                                                          VerticalAlignment="Center"/>
+                                                </Viewbox>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" TargetName="Border">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="#FF11A6F3"
+                                                         Opacity="0.15"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="Border" Value="#FF117DF3"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" TargetName="Border">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="#FF11A6F3"
+                                                         Opacity="0.15"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="BorderBrush" TargetName="Border" Value="#FF117DF3"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="5,3,20,3"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                            <Popup Name="Popup"
+                                   SnapsToDevicePixels="True"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border Name="DropDownBorder"
+                                            Background="{StaticResource MenuBackgroundColorBrush}"
+                                            BorderThickness="0.5"
+                                            BorderBrush="{StaticResource MenuBorderColorBrush}"/>
+                                    <ScrollViewer>
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ContentMenuRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="0" 
+                                Name="Panel">
+                            <StackPanel Name="ContentStackPanel" Background="Transparent"
+                                        Orientation="Vertical">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Content="{TemplateBinding Content}"
+                                                  Margin="0,6,0,3"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuBorderColorBrush}"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush Color="White"
+                                     Opacity="0.5"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="0"
+                                Margin="6"
+                                Padding="12,0,60,0">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SearchButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="Panel" BorderThickness="0" 
+                                Background="Transparent">
+                            <Grid Name="ContentGrid">
+                                <ContentPresenter VerticalAlignment="Stretch"
+                                                  HorizontalAlignment="Stretch"
+                                                  Content="{TemplateBinding Content}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FF68A6BD"
+                                             Opacity="0.5"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FF68A6BD"
+                                             Opacity="1.0"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="100*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="0,0,0,-1" Background="{StaticResource MenuBarBackgroundColorBrush}">
+            <Label HorizontalAlignment="Left" Margin="5,0,0,0" FontSize="18" VerticalAlignment="Center"
+                   Foreground="White" Content="{Binding ElementName=mainWindow, Path=Title}"/>
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button x:Name="CloseButton" VerticalAlignment="Top"
+                        Click="MenuButton_Click"
+                        Width="45" Height="30" ToolTip="Zamknij">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource MenuBarControlButtonStyle}" TargetType="Button">
+                            <Setter Property="Margin" Value="0.5,0.5,0,0"/>
+                        </Style>
+                    </Button.Style>
+                    <Image Width="10" Height="10" Margin="0">
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=BorderBrush}"
+                                                 Thickness="0.35"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0,0">
+                                                    <LineSegment Point="5,5"/>
+                                                </PathFigure>
+                                                <PathFigure StartPoint="5,0">
+                                                    <LineSegment Point="0,5"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Button x:Name="MaximizeButton" VerticalAlignment="Top"
+                        Click="MenuButton_Click"
+                        Width="45" Height="30" ToolTip="Maksymalizuj">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource MenuBarControlButtonStyle}" TargetType="Button">
+                            <Setter Property="BorderBrush" Value="{StaticResource MenuBarBackgroundColorBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border BorderThickness="0"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                Background="{TemplateBinding Background}"
+                                                VerticalAlignment="Stretch" 
+                                                HorizontalAlignment="Stretch"
+                                                Name="Panel">
+                                            <StackPanel Name="ContentStackPanel"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center">
+                                                <Image Name="Image" Source="{DynamicResource Maximize}" 
+                                                       Width="10" Height="10" Margin="0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=mainWindow, Path=WindowState}" Value="Maximized">
+                                                <Setter TargetName="Image" Property="Source" Value="{DynamicResource Maximized}"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Resources>
+                        <DrawingImage x:Key="Maximize">
+                            <DrawingImage.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="{Binding ElementName=MaximizeButton, Path=Foreground}"
+                                             LineJoin="Miter" Thickness="0.35"/>
+                                    </GeometryDrawing.Pen>
+                                    <GeometryDrawing.Geometry>
+                                        <PathGeometry>
+                                            <PathFigure IsClosed="True" StartPoint="0,0">
+                                                <LineSegment Point="5,0"/>
+                                                <LineSegment Point="5,5"/>
+                                                <LineSegment Point="0,5"/>
+                                                <LineSegment Point="0,0"/>
+                                            </PathFigure>
+                                        </PathGeometry>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                        <DrawingImage x:Key="Maximized">
+                            <DrawingImage.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="{Binding ElementName=MaximizeButton, Path=Foreground}"
+                                                 LineJoin="Miter" Thickness="0.35"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure IsClosed="True" StartPoint="1.2,-1.2">
+                                                    <LineSegment Point="6.2,-1.2"/>
+                                                    <LineSegment Point="6.2,3.8"/>
+                                                    <LineSegment Point="1.2,3.8"/>
+                                                    <LineSegment Point="1.2,-1.2"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                    <GeometryDrawing Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=BorderBrush}">
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}"
+                                                 LineJoin="Miter" Thickness="0.35"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure IsClosed="True" StartPoint="0,0">
+                                                    <LineSegment Point="5,0"/>
+                                                    <LineSegment Point="5,5"/>
+                                                    <LineSegment Point="0,5"/>
+                                                    <LineSegment Point="0,0"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                    </Button.Resources>
+                </Button>
+                <Button x:Name="MinimizeButton" VerticalAlignment="Top"
+                        Click="MenuButton_Click"
+                        Width="45" Height="30" ToolTip="Minimalizuj">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource MenuBarControlButtonStyle}" TargetType="Button">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Image Width="10" Height="10" Margin="0">
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing>
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}"
+                                                 Thickness="0.4"/>
+                                        </GeometryDrawing.Pen>
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0,0">
+                                                    <LineSegment Point="5,0"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Panel.ZIndex="-1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="100*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <StackPanel Width="250">
+                    <StackPanel.Background>
+                        <SolidColorBrush Color="#FFD4D4D4" 
+                                         Opacity="1.0"/>
+                    </StackPanel.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="45"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Style="{StaticResource SearchTextBoxStyle}" Margin="5,6,6,0"
+                                 x:Name="SearchTextBox" Height="50" Grid.ColumnSpan="3"
+                                 TextChanged="SearchTextBox_TextChanged"/>
+                        <Label VerticalContentAlignment="Center" Content="Wyszukaj" FontSize="15"
+                               Margin="20,6,0,0" IsHitTestVisible="False" x:Name="DefaultSearchLabel" Grid.Column="0">
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=IsFocused}" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource MenuBorderColorBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                        <Button Grid.Column="2" Margin="0,6,0,0" HorizontalAlignment="Left" 
+                                Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                x:Name="SearchButton">
+                            <Button.Style>
+                                <Style BasedOn="{StaticResource SearchButtonStyle}" TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=IsFocused}" Value="False">
+                                            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Viewbox Margin="3">
+                                    <Path x:Name="ZoomIcon" Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" 
+                                          Data="M 19 3 C 13.488281 3 9 7.488281 9 13 C 9 15.394531 9.839844 17.589844 11.25 19.3125 L 3.28125 27.28125 L 4.71875 28.71875 L 12.6875 20.75 C 14.410156 22.160156 16.605469 23 19 23 C 24.511719 23 29 18.511719 29 13 C 29 7.488281 24.511719 3 19 3 Z M 19 5 C 23.429688 5 27 8.570313 27 13 C 27 17.429688 23.429688 21 19 21 C 14.570313 21 11 17.429688 11 13 C 11 8.570313 14.570313 5 19 5 Z"/>
+                                </Viewbox>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                    <RadioButton x:Name="MyLibraryRadioButton" Style="{StaticResource MainRadioButtonStyle}" IsChecked="True"
+                                 ToolTip="Baza wszystkich filmów DVD, płyt CD oraz książek dostępnych w Twojej bibliotece" Margin="0,6,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Icons/library.png" Height="20" Margin="0,-2,4,0"/>
+                            <Label Content="Moja biblioteka"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
+                          Margin="9,4" StrokeThickness="1.25" Stroke="#FFA3A3A3"/>
+                    <RadioButton x:Name="BooksRadioButton" Style="{StaticResource MainRadioButtonStyle}"
+                                 ToolTip="Twoja baza książek pogrupowana według tytułu, autora lub roku wydania">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Icons/book.png" Height="20" Margin="0,0,4,0"/>
+                            <Label Content="Książki"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="MusicRadioButton" Style="{StaticResource MainRadioButtonStyle}"
+                                 ToolTip="Twoja baza płyt CD pogrupowana według utworu, wykonawcy lub albumu">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Icons/music.png" Height="20" Margin="0,0,4,0"/>
+                            <Label Content="Muzyka"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="MoviesRadioButton" Style="{StaticResource MainRadioButtonStyle}"
+                                 ToolTip="Twoja baza filmów DVD pogrupowana według tytułu, reżysera lub roku produkcji">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Icons/movie.png" Height="20" Margin="0,0,4,0"/>
+                            <Label Content="Filmy"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1">
+                <TabControl x:Name="MainTabControl" Background="Transparent" 
+                            BorderThickness="0" Margin="-3,-3,-1.5,-1">
+                    <TabItem Visibility="Collapsed" x:Name="MyLibraryTabItem">
+                        <StackPanel>
+                            <StackPanel.Background>
+                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </StackPanel.Background>
+                            <Grid Margin="12">
+                                <Label Content="Moja biblioteka" FontWeight="ExtraBlack" FontSize="28"/>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Visibility="Collapsed" x:Name="BooksTabItem">
+                        <StackPanel>
+                            <StackPanel.Background>
+                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </StackPanel.Background>
+                            <Grid Margin="12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Content="Książki" FontSize="28"/>
+                                <StackPanel Grid.Row="1" Margin="6,0,0,0" Orientation="Horizontal">
+                                    <RadioButton Content="Tytuły" IsChecked="True" Name="BookTitleRadioButton" Margin="0,0,28,0"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
+                                    <RadioButton Content="Autorzy" Margin="0,0,28,0" Name="BookAuthorRadioButton"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
+                                    <RadioButton Content="Rok wydania" Name="BookYearRadioButton"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Margin="6,1,0,0">
+                                    <Rectangle Name="BookMenuRectangle" Fill="{StaticResource MenuActiveListColorBrush}" 
+                                               StrokeThickness="0" HorizontalAlignment="Left" Height="2" Panel.ZIndex="1"
+                                               Width="{Binding ElementName=BookTitleRadioButton, Path=ActualWidth}"/>
+                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
+                                          Margin="0,-0.5,6,6" StrokeThickness="1.2" Stroke="#FFBCBEBF"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Margin="6,2,0,0">
+                                    <StackPanel Orientation="Horizontal" Margin="-2,0,0,-8" Height="44">
+                                        <Label Content="Sortuj wg:" FontSize="13"/>
+                                        <Button Style="{StaticResource SortContentButtonStyle}" Margin="12,-14,0,0" Content="A-Z"/>
+                                    </StackPanel>
+                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
+                                          Margin="1,1,6,0" StrokeThickness="1.2" Stroke="#FFBCBEBF"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Visibility="Collapsed" x:Name="MusicTabItem">
+                        <StackPanel>
+                            <StackPanel.Background>
+                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </StackPanel.Background>
+                            <Grid Margin="12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Content="Muzyka" FontSize="28"/>
+                                <StackPanel Grid.Row="1" Margin="6,0,0,0" Orientation="Horizontal">
+                                    <RadioButton Content="Utwory" IsChecked="True" Name="MusicTitleRadioButton" Margin="0,0,28,0"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
+                                    <RadioButton Content="Wykonawcy" Margin="0,0,28,0" Name="MusicPerformerRadioButton"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
+                                    <RadioButton Content="Albumy" Name="MusicAlbumRadioButton"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Margin="6,1,0,0">
+                                    <Rectangle Name="MusicMenuRectangle" Fill="{StaticResource MenuActiveListColorBrush}" 
+                                               StrokeThickness="0" HorizontalAlignment="Left" Height="2" Panel.ZIndex="1"
+                                               Width="{Binding ElementName=MusicTitleRadioButton, Path=ActualWidth}"/>
+                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
+                                          Margin="0,-0.5,6,6" StrokeThickness="1" Stroke="#FFBCBEBF"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Visibility="Collapsed" x:Name="MoviesTabItem">
+                        <StackPanel>
+                            <StackPanel.Background>
+                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </StackPanel.Background>
+                            <Grid Margin="12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Content="Filmy" FontSize="28"/>
+                                <StackPanel Grid.Row="1" Margin="6,0,0,0" Orientation="Horizontal">
+                                    <RadioButton Content="Tytuły" IsChecked="True" Name="MovieTitleRadioButton" Margin="0,0,28,0"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
+                                    <RadioButton Content="Reżyseria" Margin="0,0,28,0" Name="MovieDirectorRadioButton"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
+                                    <RadioButton Content="Rok produkcji" Name="MovieYearRadioButton"
+                                                 Style="{StaticResource ContentMenuRadioButtonStyle}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Margin="6,1,0,0">
+                                    <Rectangle Name="MovieMenuRectangle" Fill="{StaticResource MenuActiveListColorBrush}" 
+                                               StrokeThickness="0" HorizontalAlignment="Left" Height="2" Panel.ZIndex="1"
+                                               Width="{Binding ElementName=MovieTitleRadioButton, Path=ActualWidth}"/>
+                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
+                                          Margin="0,-0.5,6,6" StrokeThickness="1" Stroke="#FFBCBEBF"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                    <TabControl.Style>
+                        <Style TargetType="TabControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=MyLibraryRadioButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="SelectedIndex" Value="0"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=BooksRadioButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="SelectedIndex" Value="1"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=MusicRadioButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="SelectedIndex" Value="2"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=MoviesRadioButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="SelectedIndex" Value="3"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TabControl.Style>
+                </TabControl>
+            </Grid>
+        </Grid>
+        <Image x:Name="MainPanelImage" Stretch="UniformToFill" 
+               Panel.ZIndex="-2" Grid.Row="2"
+               Opacity="0.7"/>
+    </Grid>
+</Window>
