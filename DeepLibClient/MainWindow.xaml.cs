@@ -44,7 +44,7 @@ namespace DeepLibClient
             Random rnd = new Random();
             int img_num = rnd.Next(1, 4);
 
-            MainPanelImage.Source = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "\\IMG\\Image_" + img_num.ToString() + ".jpg", UriKind.Absolute));
+
             MainPanelImage.Height = (int)SystemParameters.MaximizedPrimaryScreenHeight - 40;
         }
 
