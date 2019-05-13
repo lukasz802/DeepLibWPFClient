@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLibClient", "DeepLibClient\DeepLibClient.csproj", "{FFCF46D0-7E70-499F-A320-BFA7289CBDBA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{83A8925F-C2DF-40B0-8B56-1645809703A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLib", "DeepLib\DeepLib.csproj", "{BE1AE5B2-3D3F-4019-A183-46B0C18A80E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepLib", "DeepLib\DeepLib.csproj", "{BE1AE5B2-3D3F-4019-A183-46B0C18A80E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{54C2BA92-9788-4B62-AF1F-E768E23EC7FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{BE1AE5B2-3D3F-4019-A183-46B0C18A80E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE1AE5B2-3D3F-4019-A183-46B0C18A80E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE1AE5B2-3D3F-4019-A183-46B0C18A80E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54C2BA92-9788-4B62-AF1F-E768E23EC7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54C2BA92-9788-4B62-AF1F-E768E23EC7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54C2BA92-9788-4B62-AF1F-E768E23EC7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54C2BA92-9788-4B62-AF1F-E768E23EC7FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
