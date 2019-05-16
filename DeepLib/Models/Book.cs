@@ -19,14 +19,12 @@ namespace DeepLib.Models
         public string WhoChangedStatus { get; set; }
         public string Comments { get; set; }
         public DateTime WhenWasLent { get; set; }
-        
+
         //public int RodzajNosnika { get; set; }
         //public int Autor { get; set; }
-        [ForeignKey("Nosniki")]
+        [ForeignKey("Medium")]
         public virtual TypeOfMedium TypeOfMedium { get; set; }
         [ForeignKey("Authors")]
         public virtual Author Author { get; set; }
-
-
     }
 }
