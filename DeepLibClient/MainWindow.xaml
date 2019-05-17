@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeepLibClient"
-        mc:Ignorable="d" SnapsToDevicePixels="True" 
+        xmlns:c="clr-namespace:DeepLibClient.Contols"
+        mc:Ignorable="d" SnapsToDevicePixels="True"
         FontFamily="/Fonts/RobotoCondensed-Light.ttf #Roboto Light"
         Title="DeepLIB" MinHeight="480" MinWidth="800"
         Height="600" Width="1000" x:Name="mainWindow">
@@ -57,75 +58,6 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <Style x:Key="MainRadioButtonStyle" TargetType="RadioButton">
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RadioButton">
-                        <Border VerticalAlignment="Stretch" 
-                                HorizontalAlignment="Stretch"
-                                BorderThickness="0" 
-                                Name="Panel">
-                            <StackPanel Name="ContentStackPanel" Background="Transparent"
-                                        Orientation="Horizontal">
-                                <Rectangle Name="Rectangle" Fill="Transparent" StrokeThickness="0"
-                                           Width="3.5"/>
-                                <ContentPresenter VerticalAlignment="Center"
-                                                  HorizontalAlignment="Left"
-                                                  Content="{TemplateBinding Content}"
-                                                  Margin="6,6,12,6"/>
-                            </StackPanel>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource MenuActiveListColorBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ContentStackPanel" Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="#FFCAC7C7"
-                                                         Opacity="0.85"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ContentStackPanel" Property="Background" Value="#FFB1AFAF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="SortContentButtonStyle" TargetType="Button">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF68A6BD"/>
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="VerticalContentAlignment" Value="Top"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="Panel" BorderThickness="0">
-                            <Grid Name="ContentGrid">
-                                <ContentPresenter VerticalAlignment="Top"
-                                                  HorizontalAlignment="Center"
-                                                  Content="{TemplateBinding Content}"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground">
-                        <Setter.Value>
-                            <SolidColorBrush Color="#FF68A6BD"
-                                             Opacity="0.5"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         <Style x:Key="MenuBarControlButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="0,0.5,0,0"/>
             <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
@@ -241,39 +173,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-        <Style x:Key="ContentMenuRadioButtonStyle" TargetType="RadioButton">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RadioButton">
-                        <Border VerticalAlignment="Stretch" 
-                                HorizontalAlignment="Stretch"
-                                BorderThickness="0" 
-                                Name="Panel">
-                            <StackPanel Name="ContentStackPanel" Background="Transparent"
-                                        Orientation="Vertical">
-                                <ContentPresenter VerticalAlignment="Center"
-                                                  HorizontalAlignment="Left"
-                                                  Content="{TemplateBinding Content}"
-                                                  Margin="0,6,0,3"/>
-                            </StackPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource MenuBorderColorBrush}"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
             <Setter Property="FontSize" Value="15"/>
@@ -546,57 +445,16 @@
                         <SolidColorBrush Color="#FFD4D4D4" 
                                          Opacity="1.0"/>
                     </StackPanel.Background>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="35"/>
-                            <ColumnDefinition Width="45"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Style="{StaticResource SearchTextBoxStyle}" Margin="5,6,6,0"
-                                 x:Name="SearchTextBox" Height="50" Grid.ColumnSpan="3"
-                                 TextChanged="SearchTextBox_TextChanged"/>
-                        <Label VerticalContentAlignment="Center" Content="Wyszukaj" FontSize="15"
-                               Margin="20,6,0,0" IsHitTestVisible="False" x:Name="DefaultSearchLabel" Grid.Column="0">
-                            <Label.Style>
-                                <Style TargetType="Label">
-                                    <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=IsFocused}" Value="True">
-                                            <Setter Property="Foreground" Value="{StaticResource MenuBorderColorBrush}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Label.Style>
-                        </Label>
-                        <Button Grid.Column="2" Margin="0,6,0,0" HorizontalAlignment="Left" 
-                                Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                x:Name="SearchButton">
-                            <Button.Style>
-                                <Style BasedOn="{StaticResource SearchButtonStyle}" TargetType="Button">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=IsFocused}" Value="False">
-                                            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                            <Grid>
-                                <Viewbox Margin="3">
-                                    <Path x:Name="ZoomIcon" Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" 
-                                          Data="M 19 3 C 13.488281 3 9 7.488281 9 13 C 9 15.394531 9.839844 17.589844 11.25 19.3125 L 3.28125 27.28125 L 4.71875 28.71875 L 12.6875 20.75 C 14.410156 22.160156 16.605469 23 19 23 C 24.511719 23 29 18.511719 29 13 C 29 7.488281 24.511719 3 19 3 Z M 19 5 C 23.429688 5 27 8.570313 27 13 C 27 17.429688 23.429688 21 19 21 C 14.570313 21 11 17.429688 11 13 C 11 8.570313 14.570313 5 19 5 Z"/>
-                                </Viewbox>
-                            </Grid>
-                        </Button>
-                    </Grid>
+                    <c:SearchTextBox x:Name="SearchUserControl" Margin="5,6,6,0"/>
                     <RadioButton x:Name="MyLibraryRadioButton" Style="{StaticResource MainRadioButtonStyle}" IsChecked="True"
                                  ToolTip="Baza wszystkich filmów DVD, płyt CD oraz książek dostępnych w Twojej bibliotece" Margin="0,6,0,0">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="Icons/library.png" Height="20" Margin="0,-2,4,0"/>
+                            <Image Source="Icons/library.png" Height="20" Margin="0,-6,4,0"/>
                             <Label Content="Moja biblioteka"/>
                         </StackPanel>
                     </RadioButton>
                     <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
-                          Margin="9,4" StrokeThickness="1.25" Stroke="#FFA3A3A3"/>
+                          Margin="9,4.5" StrokeThickness="1.25" Stroke="#FFA3A3A3"/>
                     <RadioButton x:Name="BooksRadioButton" Style="{StaticResource MainRadioButtonStyle}"
                                  ToolTip="Twoja baza książek pogrupowana według tytułu, autora lub roku wydania">
                         <StackPanel Orientation="Horizontal">
@@ -619,6 +477,61 @@
                         </StackPanel>
                     </RadioButton>
                 </StackPanel>
+                <StackPanel Width="250" VerticalAlignment="Bottom">
+                    <StackPanel.Background>
+                        <SolidColorBrush Color="#FFD4D4D4" 
+                                         Opacity="1.0"/>
+                    </StackPanel.Background>
+                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
+                          Margin="9,3.5" StrokeThickness="1.25" Stroke="#FFA3A3A3"/>
+                    <RadioButton x:Name="RefreshRadioButton"
+                                 ToolTip="Zaktualizuj bibliotekę"
+                                 Margin="0,0,0,12">
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Height="20" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                                     Margin="0,0,4,0">
+                                <Path Fill="Black" StrokeLineJoin="Miter"
+                                      Data="M 12 0 L 8 4 L 12 8 L 12 5 C 15.859 5 19 8.14 19 12 C 19 12.88 18.82925 13.720094 18.53125 14.496094 L 20.046875 16.009766 C 20.651875 14.800766 21 13.442 21 12 C 21 7.038 16.963 3 12 3 L 12 0 z M 3.953125 7.9902344 C 3.348125 9.1992344 3 10.558 3 12 C 3 16.962 7.037 21 12 21 L 12 24 L 16 20 L 12 16 L 12 19 C 8.141 19 5 15.86 5 12 C 5 11.12 5.17075 10.279906 5.46875 9.5039062 L 3.953125 7.9902344 z"/>
+                            </Viewbox>
+                            <Label Content="Odśwież"/>
+                        </StackPanel>
+                        <RadioButton.Style>
+                            <Style BasedOn="{StaticResource MainRadioButtonStyle}" TargetType="RadioButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                            <Border VerticalAlignment="Stretch" 
+                                                    HorizontalAlignment="Stretch"
+                                                    BorderThickness="0" 
+                                                    Name="Panel">
+                                                <StackPanel Name="ContentStackPanel" Background="Transparent"
+                                                            Orientation="Horizontal">
+                                                    <ContentPresenter VerticalAlignment="Center"
+                                                                      HorizontalAlignment="Left"
+                                                                      Content="{TemplateBinding Content}"
+                                                                      Margin="9.5,6,12,6"/>
+                                                </StackPanel>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="ContentStackPanel" Property="Background">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush Color="#FFCAC7C7"
+                                                                             Opacity="0.85"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter TargetName="ContentStackPanel" Property="Background" Value="#FFB1AFAF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                    </RadioButton>
+                </StackPanel>
             </Grid>
             <Grid Grid.Column="1">
                 <TabControl x:Name="MainTabControl" Background="Transparent" 
@@ -633,116 +546,38 @@
                             </StackPanel.Background>
                             <Grid Margin="12">
                                 <Label Content="Moja biblioteka" FontWeight="ExtraBlack" FontSize="28"/>
+                                <Image x:Name="Loader" Width="45" Height="45" 
+                                       Source="Icons/loader.png" 
+                                       RenderTransformOrigin="0.5, 0.5">
+                                    <Image.RenderTransform>
+                                        <RotateTransform x:Name="AnimatedLayoutTransform"
+                                                         Angle="0"/>
+                                    </Image.RenderTransform>
+                                    <Image.Triggers>
+                                        <EventTrigger RoutedEvent="Image.Loaded">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard TargetProperty="Image.RotateTransform">
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedLayoutTransform"
+                                                                         Storyboard.TargetProperty="Angle" To="360"
+                                                                         Duration="0:0:2.5" RepeatBehavior="Forever"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                    </Image.Triggers>
+                                </Image>
                             </Grid>
                         </StackPanel>
                     </TabItem>
                     <TabItem Visibility="Collapsed" x:Name="BooksTabItem">
-                        <StackPanel>
-                            <StackPanel.Background>
-                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
-                                    <GradientStop Color="White" Offset="0"/>
-                                    <GradientStop Color="Transparent" Offset="1"/>
-                                </LinearGradientBrush>
-                            </StackPanel.Background>
-                            <Grid Margin="12">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Content="Książki" FontSize="28"/>
-                                <StackPanel Grid.Row="1" Margin="6,0,0,0" Orientation="Horizontal">
-                                    <RadioButton Content="Tytuły" IsChecked="True" Name="BookTitleRadioButton" Margin="0,0,28,0"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
-                                    <RadioButton Content="Autorzy" Margin="0,0,28,0" Name="BookAuthorRadioButton"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
-                                    <RadioButton Content="Rok wydania" Name="BookYearRadioButton"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="2" Margin="6,1,0,0">
-                                    <Rectangle Name="BookMenuRectangle" Fill="{StaticResource MenuActiveListColorBrush}" 
-                                               StrokeThickness="0" HorizontalAlignment="Left" Height="2" Panel.ZIndex="1"
-                                               Width="{Binding ElementName=BookTitleRadioButton, Path=ActualWidth}"/>
-                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
-                                          Margin="0,-0.5,6,6" StrokeThickness="1.2" Stroke="#FFBCBEBF"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="3" Margin="6,2,0,0">
-                                    <StackPanel Orientation="Horizontal" Margin="-2,0,0,-8" Height="44">
-                                        <Label Content="Sortuj wg:" FontSize="13"/>
-                                        <Button Style="{StaticResource SortContentButtonStyle}" Margin="12,-14,0,0" Content="A-Z"/>
-                                    </StackPanel>
-                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
-                                          Margin="1,1,6,0" StrokeThickness="1.2" Stroke="#FFBCBEBF"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
+                        <Frame Source="BooksPage.xaml"/>
                     </TabItem>
                     <TabItem Visibility="Collapsed" x:Name="MusicTabItem">
-                        <StackPanel>
-                            <StackPanel.Background>
-                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
-                                    <GradientStop Color="White" Offset="0"/>
-                                    <GradientStop Color="Transparent" Offset="1"/>
-                                </LinearGradientBrush>
-                            </StackPanel.Background>
-                            <Grid Margin="12">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Content="Muzyka" FontSize="28"/>
-                                <StackPanel Grid.Row="1" Margin="6,0,0,0" Orientation="Horizontal">
-                                    <RadioButton Content="Utwory" IsChecked="True" Name="MusicTitleRadioButton" Margin="0,0,28,0"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
-                                    <RadioButton Content="Wykonawcy" Margin="0,0,28,0" Name="MusicPerformerRadioButton"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
-                                    <RadioButton Content="Albumy" Name="MusicAlbumRadioButton"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="2" Margin="6,1,0,0">
-                                    <Rectangle Name="MusicMenuRectangle" Fill="{StaticResource MenuActiveListColorBrush}" 
-                                               StrokeThickness="0" HorizontalAlignment="Left" Height="2" Panel.ZIndex="1"
-                                               Width="{Binding ElementName=MusicTitleRadioButton, Path=ActualWidth}"/>
-                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
-                                          Margin="0,-0.5,6,6" StrokeThickness="1" Stroke="#FFBCBEBF"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
+                        <Frame Source="MusicPage.xaml"/>
                     </TabItem>
                     <TabItem Visibility="Collapsed" x:Name="MoviesTabItem">
-                        <StackPanel>
-                            <StackPanel.Background>
-                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
-                                    <GradientStop Color="White" Offset="0"/>
-                                    <GradientStop Color="Transparent" Offset="1"/>
-                                </LinearGradientBrush>
-                            </StackPanel.Background>
-                            <Grid Margin="12">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Content="Filmy" FontSize="28"/>
-                                <StackPanel Grid.Row="1" Margin="6,0,0,0" Orientation="Horizontal">
-                                    <RadioButton Content="Tytuły" IsChecked="True" Name="MovieTitleRadioButton" Margin="0,0,28,0"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
-                                    <RadioButton Content="Reżyseria" Margin="0,0,28,0" Name="MovieDirectorRadioButton"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}" />
-                                    <RadioButton Content="Rok produkcji" Name="MovieYearRadioButton"
-                                                 Style="{StaticResource ContentMenuRadioButtonStyle}"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="2" Margin="6,1,0,0">
-                                    <Rectangle Name="MovieMenuRectangle" Fill="{StaticResource MenuActiveListColorBrush}" 
-                                               StrokeThickness="0" HorizontalAlignment="Left" Height="2" Panel.ZIndex="1"
-                                               Width="{Binding ElementName=MovieTitleRadioButton, Path=ActualWidth}"/>
-                                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
-                                          Margin="0,-0.5,6,6" StrokeThickness="1" Stroke="#FFBCBEBF"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
+                        <Frame Source="MoviesPage.xaml"/>
                     </TabItem>
                     <TabControl.Style>
                         <Style TargetType="TabControl">

@@ -11,5 +11,107 @@
         <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656262"/>
         <SolidColorBrush x:Key="MenuListColorBrush" Color="Black"/>
         <SolidColorBrush x:Key="MenuActiveListColorBrush" Color="#FF3A96B9"/>
+        <Style x:Key="MainRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="0" 
+                                Name="Panel">
+                            <StackPanel Name="ContentStackPanel" Background="Transparent"
+                                        Orientation="Horizontal">
+                                <Rectangle Name="Rectangle" Fill="Transparent" StrokeThickness="0"
+                                           Width="3.5"/>
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Content="{TemplateBinding Content}"
+                                                  Margin="6,6,12,6"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource MenuActiveListColorBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ContentStackPanel" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FFCAC7C7"
+                                                         Opacity="0.85"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ContentStackPanel" Property="Background" Value="#FFB1AFAF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ContentMenuRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border VerticalAlignment="Stretch" 
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="0" 
+                                Name="Panel">
+                            <StackPanel Name="ContentStackPanel" Background="Transparent"
+                                        Orientation="Vertical">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Content="{TemplateBinding Content}"
+                                                  Margin="0,6,0,3"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuBorderColorBrush}"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SortContentButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#FF68A6BD"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="Panel" BorderThickness="0">
+                            <Grid Name="ContentGrid">
+                                <ContentPresenter VerticalAlignment="Top"
+                                                  HorizontalAlignment="Center"
+                                                  Content="{TemplateBinding Content}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FF68A6BD"
+                                             Opacity="0.5"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

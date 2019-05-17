@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DeepLibClient.Contols"
-             mc:Ignorable="d"
+             mc:Ignorable="d" x:Name="SearchTxtBox"
              FontFamily="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=FontFamily}"
              SnapsToDevicePixels="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=SnapsToDevicePixels}"
              d:DesignHeight="50" d:DesignWidth="250">
@@ -64,14 +64,9 @@
                                 HorizontalAlignment="Stretch"
                                 BorderThickness="0"
                                 Margin="6"
-                                Padding="12,0,60,0">
+                                Padding="12,0,75,0">
                             <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Background" Value="White"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -84,60 +79,48 @@
             <ColumnDefinition Width="45"/>
         </Grid.ColumnDefinitions>
         <TextBox Style="{StaticResource SearchTextBoxStyle}"
-                 x:Name="SearchTextBoxContol" Height="50" Grid.ColumnSpan="3"
+                 x:Name="SearchTextBoxControl" Height="50" Grid.ColumnSpan="3"
                  TextChanged="SearchTextBoxControl_TextChanged"/>
         <Label VerticalContentAlignment="Center" Content="Wyszukaj" FontSize="15"
-               Margin="20,0,0,0" IsHitTestVisible="False" 
-               x:Name="DefaultSearchLabelControl" Grid.Column="0">
-            <Label.Style>
-                <Style TargetType="Label">
-                    <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=SearchTextBoxControl, Path=IsFocused}" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource MenuBorderColorBrush}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Label.Style>
-        </Label>
-        <Button Grid.Column="2" HorizontalAlignment="Left" 
+               Margin="15,0,0,0" IsHitTestVisible="False" 
+               x:Name="DefaultSearchLabelControl" Grid.Column="0"
+               Foreground="{StaticResource MenuContainerForegroundColorBrush}"/>
+        <Button Grid.Column="2" HorizontalAlignment="Left" Style="{StaticResource SearchButtonStyle}"
                 Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                 x:Name="SearchButtonControl">
-            <Button.Style>
-                <Style BasedOn="{StaticResource SearchButtonStyle}" TargetType="Button">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=IsFocused}" Value="False">
-                            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
             <Grid>
-                <Viewbox Margin="3">
+                <Viewbox Margin="3.5">
                     <Path x:Name="ZoomIcon" Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" 
                           Data="M 19 3 C 13.488281 3 9 7.488281 9 13 C 9 15.394531 9.839844 17.589844 11.25 19.3125 L 3.28125 27.28125 L 4.71875 28.71875 L 12.6875 20.75 C 14.410156 22.160156 16.605469 23 19 23 C 24.511719 23 29 18.511719 29 13 C 29 7.488281 24.511719 3 19 3 Z M 19 5 C 23.429688 5 27 8.570313 27 13 C 27 17.429688 23.429688 21 19 21 C 14.570313 21 11 17.429688 11 13 C 11 8.570313 14.570313 5 19 5 Z"/>
                 </Viewbox>
             </Grid>
         </Button>
-        <Button Grid.Column="1" HorizontalAlignment="Left" 
+        <Button Grid.Column="1" HorizontalAlignment="Left"
                 Height="25" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                x:Name="ClearButtonControl">
-            <Button.Style>
-                <Style BasedOn="{StaticResource SearchButtonStyle}" TargetType="Button">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=SearchTextBox, Path=IsFocused}" Value="False">
-                            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-            <Grid Margin="0,2,0,-2">
-                <Viewbox Margin="4">
-                    <Path x:Name="ClearIcon" StrokeThickness="0.3"
+                x:Name="ClearButtonControl" Click="ClearButtonControl_Click">
+            <Grid>
+                <Viewbox Margin="6.5,7,6.5,5">
+                    <Path x:Name="ClearIcon" StrokeThickness="0.45"
                           Stroke="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" 
                           Data="M0,0L5,5 M5,0L0,5"/>
                 </Viewbox>
             </Grid>
+            <Button.Style>
+                <Style BasedOn="{StaticResource SearchButtonStyle}" TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=DefaultSearchLabelControl, Path=IsVisible}" Value="True">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=SearchTxtBox, Path=IsKeyboardFocusWithin}" Value="False"/>
+                                <Condition Binding="{Binding ElementName=ClearButtonControl, Path=IsFocused}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
     </Grid>
 </UserControl>

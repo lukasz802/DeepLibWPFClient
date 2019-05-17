@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DeepLibClient.Contols
 {
@@ -23,12 +13,72 @@ namespace DeepLibClient.Contols
         public SearchTextBox()
         {
             InitializeComponent();
+            this.GotFocus += SearchTxtBox_Focus;
+            this.LostFocus += SearchTxtBox_Focus;
+            SearchButtonControl.Click += OnSearchClick;
+            SearchTextBoxControl.TextChanged += OnTextChanged;
         }
+
+        private RoutedEventArgs _args;
 
         private void SearchTextBoxControl_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (((TextBox)sender).Text != "") { DefaultSearchLabelControl.Visibility = Visibility.Hidden; }
             else { DefaultSearchLabelControl.Visibility = Visibility.Visible; }
         }
+
+        private void SearchTxtBox_Focus(object sender, RoutedEventArgs e)
+        {
+            if (this.IsKeyboardFocusWithin == false)
+            {
+                DefaultSearchLabelControl.Foreground = (Brush)Application.Current.FindResource("MenuContainerForegroundColorBrush");
+                SearchTextBoxControl.Background = new SolidColorBrush() { Color = Colors.White, Opacity = 0.5 };
+            }
+            else
+            {
+                DefaultSearchLabelControl.Foreground = (Brush)Application.Current.FindResource("MenuBorderColorBrush");    
+                SearchTextBoxControl.Background = Brushes.White;
+            }
+
+        }
+
+        private void ClearButtonControl_Click(object sender, RoutedEventArgs e)
+        {
+            SearchTextBoxControl.Clear();
+        }
+
+        private void OnSearchClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            _args = new RoutedEventArgs(SearchClickEvent);
+            RaiseEvent(_args);
+        }
+
+        public event RoutedEventHandler SearchClick
+        {
+            add { AddHandler(SearchClickEvent, value); }
+            remove { RemoveHandler(SearchClickEvent, value); }
+        }
+
+        public static readonly RoutedEvent SearchClickEvent =
+            EventManager.RegisterRoutedEvent("SearchClick",
+            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SearchTextBox));
+
+        private void OnTextChanged(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            _args = new RoutedEventArgs(TextChangedEvent);
+            RaiseEvent(_args);
+        }
+
+        public event RoutedEventHandler TextChanged
+        {
+            add { AddHandler(TextChangedEvent, value); }
+            remove { RemoveHandler(TextChangedEvent, value); }
+        }
+
+        public static readonly RoutedEvent TextChangedEvent =
+            EventManager.RegisterRoutedEvent("TextChanged",
+            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SearchTextBox));
     }
 }
