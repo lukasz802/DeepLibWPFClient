@@ -16,6 +16,7 @@ namespace DeepLibClient.Contols
             this.GotFocus += SearchTxtBox_Focus;
             this.LostFocus += SearchTxtBox_Focus;
             SearchButtonControl.Click += OnSearchClick;
+            ClearButtonControl.Click += OnRemoveResultsClick;
             SearchTextBoxControl.TextChanged += OnTextChanged;
         }
 
@@ -62,6 +63,23 @@ namespace DeepLibClient.Contols
 
         public static readonly RoutedEvent SearchClickEvent =
             EventManager.RegisterRoutedEvent("SearchClick",
+            RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SearchTextBox));
+
+        private void OnRemoveResultsClick(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            _args = new RoutedEventArgs(RemoveResultsClickEvent);
+            RaiseEvent(_args);
+        }
+
+        public event RoutedEventHandler RemoveResultsClick
+        {
+            add { AddHandler(RemoveResultsClickEvent, value); }
+            remove { RemoveHandler(RemoveResultsClickEvent, value); }
+        }
+
+        public static readonly RoutedEvent RemoveResultsClickEvent =
+            EventManager.RegisterRoutedEvent("RemoveResultsClick",
             RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SearchTextBox));
 
         private void OnTextChanged(object sender, RoutedEventArgs e)

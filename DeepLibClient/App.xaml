@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:DeepLibClient"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <SolidColorBrush x:Key="CreatorsDetailsPanelColorBrush" Color="Transparent"/>
         <SolidColorBrush x:Key="MenuBackgroundColorBrush" Color="{x:Static SystemColors.ControlLightLightColor}"/>
         <SolidColorBrush x:Key="MenuBarBackgroundColorBrush" Color="#FFE7392C"/>
         <SolidColorBrush x:Key="MenuBarActiveControlColorBrush" Color="#FFBF5353"/>
@@ -11,49 +12,9 @@
         <SolidColorBrush x:Key="MenuContainerForegroundColorBrush" Color="#FF656262"/>
         <SolidColorBrush x:Key="MenuListColorBrush" Color="Black"/>
         <SolidColorBrush x:Key="MenuActiveListColorBrush" Color="#FF3A96B9"/>
-        <Style x:Key="MainRadioButtonStyle" TargetType="RadioButton">
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RadioButton">
-                        <Border VerticalAlignment="Stretch" 
-                                HorizontalAlignment="Stretch"
-                                BorderThickness="0" 
-                                Name="Panel">
-                            <StackPanel Name="ContentStackPanel" Background="Transparent"
-                                        Orientation="Horizontal">
-                                <Rectangle Name="Rectangle" Fill="Transparent" StrokeThickness="0"
-                                           Width="3.5"/>
-                                <ContentPresenter VerticalAlignment="Center"
-                                                  HorizontalAlignment="Left"
-                                                  Content="{TemplateBinding Content}"
-                                                  Margin="6,6,12,6"/>
-                            </StackPanel>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource MenuActiveListColorBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ContentStackPanel" Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="#FFCAC7C7"
-                                                         Opacity="0.85"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ContentStackPanel" Property="Background" Value="#FFB1AFAF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="ContentMenuRadioButtonStyle" TargetType="RadioButton">
             <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -74,13 +35,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource MenuBorderColorBrush}"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource MenuListColorBrush}"/>
+                    <Setter Property="Cursor" Value="Hand"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -110,6 +65,7 @@
                                              Opacity="0.5"/>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="Cursor" Value="Hand"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

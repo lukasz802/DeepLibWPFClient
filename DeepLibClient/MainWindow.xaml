@@ -7,14 +7,15 @@
         xmlns:c="clr-namespace:DeepLibClient.Contols"
         mc:Ignorable="d" SnapsToDevicePixels="True"
         FontFamily="/Fonts/RobotoCondensed-Light.ttf #Roboto Light"
-        Title="DeepLIB" MinHeight="480" MinWidth="800"
-        Height="600" Width="1000" x:Name="mainWindow">
+        Title="DeepLIB" MinHeight="480" MinWidth="930"
+        Height="600" Width="1100" x:Name="mainWindow"
+        MouseLeftButtonDown="MainTabControl_MouseLeftButtonDown">
     <Window.Style>
         <Style TargetType="Window">
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="WindowChrome.WindowChrome">
                 <Setter.Value>
-                    <WindowChrome CaptionHeight="45"
+                    <WindowChrome CaptionHeight="30"
                                   CornerRadius="0"
                                   GlassFrameThickness="0"
                                   NonClientFrameEdges="None"
@@ -174,82 +175,58 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <SolidColorBrush Color="White"
-                                     Opacity="0.5"/>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="TextAlignment" Value="Left"/>
-            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Style x:Key="MainButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="Bd"
-                                Background="{TemplateBinding Background}"
-                                VerticalAlignment="Stretch" 
+                    <ControlTemplate TargetType="Button">
+                        <Border VerticalAlignment="Stretch" 
                                 HorizontalAlignment="Stretch"
-                                BorderThickness="0"
-                                Margin="6"
-                                Padding="12,0,60,0">
-                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                Background="Transparent"
+                                CornerRadius="3.5"
+                                BorderThickness="0" 
+                                Name="Panel">
+                            <Grid Name="ContentStackPanel" 
+                                  Background="Transparent"
+                                  VerticalAlignment="Stretch" 
+                                  HorizontalAlignment="Stretch">
+                                <ContentPresenter VerticalAlignment="Stretch"
+                                                  HorizontalAlignment="Stretch"
+                                                  Content="{TemplateBinding Content}"/>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Background" Value="White"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Panel" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FFE24B4B"
+                                                         Opacity="1.0"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Panel" Property="Background" Value="#FFD94B4B"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="SearchButtonStyle" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource MenuContainerForegroundColorBrush}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="Panel" BorderThickness="0" 
-                                Background="Transparent">
-                            <Grid Name="ContentGrid">
-                                <ContentPresenter VerticalAlignment="Stretch"
-                                                  HorizontalAlignment="Stretch"
-                                                  Content="{TemplateBinding Content}"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground">
-                        <Setter.Value>
-                            <SolidColorBrush Color="#FF68A6BD"
-                                             Opacity="0.5"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground">
-                        <Setter.Value>
-                            <SolidColorBrush Color="#FF68A6BD"
-                                             Opacity="1.0"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="85"/>
             <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="0,0,0,-1" Background="{StaticResource MenuBarBackgroundColorBrush}">
-            <Label HorizontalAlignment="Left" Margin="5,0,0,0" FontSize="18" VerticalAlignment="Center"
+        <Grid Grid.Row="0" Background="{StaticResource MenuBarBackgroundColorBrush}">
+            <Label HorizontalAlignment="Center" Margin="5,0,0,0" FontSize="15" VerticalAlignment="Center"
                    Foreground="White" Content="{Binding ElementName=mainWindow, Path=Title}"/>
+            <Image HorizontalAlignment="Left" Margin="6,2.75,0,5.5" VerticalAlignment="Center"
+                   Source="main_4EG_icon.ico"/>
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button x:Name="CloseButton" VerticalAlignment="Top"
                         Click="MenuButton_Click"
@@ -434,174 +411,285 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" Panel.ZIndex="-1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="100*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <StackPanel Width="250">
-                    <StackPanel.Background>
-                        <SolidColorBrush Color="#FFD4D4D4" 
-                                         Opacity="1.0"/>
-                    </StackPanel.Background>
-                    <c:SearchTextBox x:Name="SearchUserControl" Margin="5,6,6,0"/>
-                    <RadioButton x:Name="MyLibraryRadioButton" Style="{StaticResource MainRadioButtonStyle}" IsChecked="True"
-                                 ToolTip="Baza wszystkich filmów DVD, płyt CD oraz książek dostępnych w Twojej bibliotece" Margin="0,6,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Icons/library.png" Height="20" Margin="0,-6,4,0"/>
-                            <Label Content="Moja biblioteka"/>
-                        </StackPanel>
-                    </RadioButton>
-                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
-                          Margin="9,4.5" StrokeThickness="1.25" Stroke="#FFA3A3A3"/>
-                    <RadioButton x:Name="BooksRadioButton" Style="{StaticResource MainRadioButtonStyle}"
-                                 ToolTip="Twoja baza książek pogrupowana według tytułu, autora lub roku wydania">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Icons/book.png" Height="20" Margin="0,0,4,0"/>
-                            <Label Content="Książki"/>
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton x:Name="MusicRadioButton" Style="{StaticResource MainRadioButtonStyle}"
-                                 ToolTip="Twoja baza płyt CD pogrupowana według utworu, wykonawcy lub albumu">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Icons/music.png" Height="20" Margin="0,0,4,0"/>
-                            <Label Content="Muzyka"/>
-                        </StackPanel>
-                    </RadioButton>
-                    <RadioButton x:Name="MoviesRadioButton" Style="{StaticResource MainRadioButtonStyle}"
-                                 ToolTip="Twoja baza filmów DVD pogrupowana według tytułu, reżysera lub roku produkcji">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="Icons/movie.png" Height="20" Margin="0,0,4,0"/>
-                            <Label Content="Filmy"/>
-                        </StackPanel>
-                    </RadioButton>
-                </StackPanel>
-                <StackPanel Width="250" VerticalAlignment="Bottom">
-                    <StackPanel.Background>
-                        <SolidColorBrush Color="#FFD4D4D4" 
-                                         Opacity="1.0"/>
-                    </StackPanel.Background>
-                    <Line X1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}"
-                          Margin="9,3.5" StrokeThickness="1.25" Stroke="#FFA3A3A3"/>
-                    <RadioButton x:Name="RefreshRadioButton"
-                                 ToolTip="Zaktualizuj bibliotekę"
-                                 Margin="0,0,0,12">
-                        <StackPanel Orientation="Horizontal">
-                            <Viewbox Height="20" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                                     Margin="0,0,4,0">
-                                <Path Fill="Black" StrokeLineJoin="Miter"
-                                      Data="M 12 0 L 8 4 L 12 8 L 12 5 C 15.859 5 19 8.14 19 12 C 19 12.88 18.82925 13.720094 18.53125 14.496094 L 20.046875 16.009766 C 20.651875 14.800766 21 13.442 21 12 C 21 7.038 16.963 3 12 3 L 12 0 z M 3.953125 7.9902344 C 3.348125 9.1992344 3 10.558 3 12 C 3 16.962 7.037 21 12 21 L 12 24 L 16 20 L 12 16 L 12 19 C 8.141 19 5 15.86 5 12 C 5 11.12 5.17075 10.279906 5.46875 9.5039062 L 3.953125 7.9902344 z"/>
-                            </Viewbox>
-                            <Label Content="Odśwież"/>
-                        </StackPanel>
-                        <RadioButton.Style>
-                            <Style BasedOn="{StaticResource MainRadioButtonStyle}" TargetType="RadioButton">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="RadioButton">
-                                            <Border VerticalAlignment="Stretch" 
-                                                    HorizontalAlignment="Stretch"
-                                                    BorderThickness="0" 
-                                                    Name="Panel">
-                                                <StackPanel Name="ContentStackPanel" Background="Transparent"
-                                                            Orientation="Horizontal">
-                                                    <ContentPresenter VerticalAlignment="Center"
-                                                                      HorizontalAlignment="Left"
-                                                                      Content="{TemplateBinding Content}"
-                                                                      Margin="9.5,6,12,6"/>
-                                                </StackPanel>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="ContentStackPanel" Property="Background">
-                                                        <Setter.Value>
-                                                            <SolidColorBrush Color="#FFCAC7C7"
-                                                                             Opacity="0.85"/>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter TargetName="ContentStackPanel" Property="Background" Value="#FFB1AFAF"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
+        <Grid Grid.Row="1" Margin="0,0,0,-1" Background="#FFF74F4F">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="0"
+                            FlowDirection="LeftToRight">
+                    <Grid>
+                        <Viewbox Height="25" Margin="5,0,0,0">
+                            <Path Data="M 25 0 C 19.355469 0 14.230469 1.011719 10.4375 2.71875 C 8.542969 3.570313 6.980469 4.601563 5.84375 5.8125 C 4.707031 7.023438 4 8.457031 4 10 L 4 19.8125 C 3.992188 19.875 3.992188 19.9375 4 20 L 4 29.8125 C 3.992188 29.875 3.992188 29.9375 4 30 L 4 39 C 4 40.542969 4.707031 41.976563 5.84375 43.1875 C 6.980469 44.398438 8.542969 45.429688 10.4375 46.28125 C 14.230469 47.988281 19.355469 49 25 49 C 30.644531 49 35.769531 47.988281 39.5625 46.28125 C 41.457031 45.429688 43.019531 44.398438 44.15625 43.1875 C 45.292969 41.976563 46 40.542969 46 39 L 46 10 C 46 8.457031 45.292969 7.023438 44.15625 5.8125 C 43.019531 4.601563 41.457031 3.570313 39.5625 2.71875 C 35.769531 1.011719 30.644531 0 25 0 Z M 25 2 C 30.402344 2 35.273438 3.011719 38.71875 4.5625 C 40.441406 5.335938 41.800781 6.242188 42.6875 7.1875 C 43.574219 8.132813 44 9.058594 44 10 C 44 10.941406 43.574219 11.867188 42.6875 12.8125 C 41.800781 13.757813 40.441406 14.664063 38.71875 15.4375 C 35.273438 16.988281 30.402344 18 25 18 C 19.597656 18 14.726563 16.988281 11.28125 15.4375 C 9.558594 14.664063 8.199219 13.757813 7.3125 12.8125 C 6.425781 11.867188 6 10.941406 6 10 C 6 9.058594 6.425781 8.132813 7.3125 7.1875 C 8.199219 6.242188 9.558594 5.335938 11.28125 4.5625 C 14.726563 3.011719 19.597656 2 25 2 Z M 6 14.34375 C 7.121094 15.488281 8.621094 16.464844 10.4375 17.28125 C 14.230469 18.988281 19.355469 20 25 20 C 30.644531 20 35.769531 18.988281 39.5625 17.28125 C 41.378906 16.464844 42.878906 15.488281 44 14.34375 L 44 19.84375 C 44 19.875 44 19.90625 44 19.9375 L 44 20 C 44 20.941406 43.574219 21.867188 42.6875 22.8125 C 41.800781 23.757813 40.441406 24.664063 38.71875 25.4375 C 35.273438 26.988281 30.402344 28 25 28 C 19.597656 28 14.726563 26.988281 11.28125 25.4375 C 9.558594 24.664063 8.199219 23.757813 7.3125 22.8125 C 6.425781 21.867188 6 20.941406 6 20 C 6.007813 19.9375 6.007813 19.875 6 19.8125 Z M 6 24.34375 C 7.121094 25.488281 8.621094 26.464844 10.4375 27.28125 C 14.230469 28.988281 19.355469 30 25 30 C 30.644531 30 35.769531 28.988281 39.5625 27.28125 C 41.378906 26.464844 42.878906 25.488281 44 24.34375 L 44 29.84375 C 44 29.875 44 29.90625 44 29.9375 L 44 30 C 44 30.941406 43.574219 31.867188 42.6875 32.8125 C 41.800781 33.757813 40.441406 34.664063 38.71875 35.4375 C 35.273438 36.988281 30.402344 38 25 38 C 19.597656 38 14.726563 36.988281 11.28125 35.4375 C 9.558594 34.664063 8.199219 33.757813 7.3125 32.8125 C 6.425781 31.867188 6 30.941406 6 30 C 6.007813 29.9375 6.007813 29.875 6 29.8125 Z M 6 34.34375 C 7.121094 35.488281 8.621094 36.464844 10.4375 37.28125 C 14.230469 38.988281 19.355469 40 25 40 C 30.644531 40 35.769531 38.988281 39.5625 37.28125 C 41.378906 36.464844 42.878906 35.488281 44 34.34375 L 44 39 C 44 39.941406 43.574219 40.867188 42.6875 41.8125 C 41.800781 42.757813 40.441406 43.664063 38.71875 44.4375 C 35.273438 45.988281 30.402344 47 25 47 C 19.597656 47 14.726563 45.988281 11.28125 44.4375 C 9.558594 43.664063 8.199219 42.757813 7.3125 41.8125 C 6.425781 40.867188 6 39.941406 6 39 Z">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                                <Setter Property="Fill" Value="LightGray"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                        </Viewbox>
+                        <Image Height="20" VerticalAlignment="Bottom" Margin="25,10,0,0"
+                           Panel.ZIndex="1" HorizontalAlignment="Right">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="Icons/powerPlug.png"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                            <Setter Property="Source" Value="Icons/noConnection.png"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="ToolTip" Value="Połączony z bazą danych DeepLIB"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                                        <Setter Property="ToolTip" Value="Brak połączenia z bazą danych DeepLIB"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
-                        </RadioButton.Style>
-                    </RadioButton>
+                        </Grid.Style>
+                    </Grid>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
+                          Margin="90,0,80,0" Width="60" ToolTip="Liczba płyt CD w bibliotece">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="Icons/music.png" Height="27"
+                               Margin="0,0,6,0" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Column="1" Text="{Binding CDsCount}" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" Foreground="White" FontSize="15"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
+                          Width="60" Margin="0,0,80,0" ToolTip="Liczba płyt DVD w bibliotece">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="Icons/movie.png" Height="27"
+                               Margin="0,0,6,0" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Column="1" Text="{Binding DVDsCount}" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" Foreground="White" FontSize="15"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           Width="60" ToolTip="Liczba książek w bibliotece">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="Icons/book.png" 
+                               Height="26" Margin="0,0,6,0" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Column="1" Text="{Binding BooksCount}" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" Foreground="White" FontSize="15"/>
+                    </Grid>
                 </StackPanel>
-            </Grid>
-            <Grid Grid.Column="1">
-                <TabControl x:Name="MainTabControl" Background="Transparent" 
-                            BorderThickness="0" Margin="-3,-3,-1.5,-1">
-                    <TabItem Visibility="Collapsed" x:Name="MyLibraryTabItem">
-                        <StackPanel>
-                            <StackPanel.Background>
-                                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0.3">
-                                    <GradientStop Color="White" Offset="0"/>
-                                    <GradientStop Color="Transparent" Offset="1"/>
-                                </LinearGradientBrush>
-                            </StackPanel.Background>
-                            <Grid Margin="12">
-                                <Label Content="Moja biblioteka" FontWeight="ExtraBlack" FontSize="28"/>
-                                <Image x:Name="Loader" Width="45" Height="45" 
-                                       Source="Icons/loader.png" 
-                                       RenderTransformOrigin="0.5, 0.5">
-                                    <Image.RenderTransform>
-                                        <RotateTransform x:Name="AnimatedLayoutTransform"
-                                                         Angle="0"/>
-                                    </Image.RenderTransform>
-                                    <Image.Triggers>
-                                        <EventTrigger RoutedEvent="Image.Loaded">
-                                            <EventTrigger.Actions>
-                                                <BeginStoryboard>
-                                                    <Storyboard TargetProperty="Image.RotateTransform">
-                                                        <DoubleAnimation Storyboard.TargetName="AnimatedLayoutTransform"
-                                                                         Storyboard.TargetProperty="Angle" To="360"
-                                                                         Duration="0:0:2.5" RepeatBehavior="Forever"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger.Actions>
-                                        </EventTrigger>
-                                    </Image.Triggers>
-                                </Image>
-                            </Grid>
-                        </StackPanel>
-                    </TabItem>
-                    <TabItem Visibility="Collapsed" x:Name="BooksTabItem">
-                        <Frame Source="BooksPage.xaml"/>
-                    </TabItem>
-                    <TabItem Visibility="Collapsed" x:Name="MusicTabItem">
-                        <Frame Source="MusicPage.xaml"/>
-                    </TabItem>
-                    <TabItem Visibility="Collapsed" x:Name="MoviesTabItem">
-                        <Frame Source="MoviesPage.xaml"/>
-                    </TabItem>
-                    <TabControl.Style>
-                        <Style TargetType="TabControl">
+                <c:AutoGreyableImage Source="Icons/azure.png" Grid.Column="1"
+                                     Height="30" Margin="0,0,17,0" HorizontalAlignment="Right"
+                                     ToolTipService.ShowOnDisabled="True">
+                    <c:AutoGreyableImage.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="ToolTip" Value="Podłączony do usług Azure Storage"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=MyLibraryRadioButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="SelectedIndex" Value="0"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ElementName=BooksRadioButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="SelectedIndex" Value="1"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ElementName=MusicRadioButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="SelectedIndex" Value="2"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ElementName=MoviesRadioButton, Path=IsChecked}" Value="True">
-                                    <Setter Property="SelectedIndex" Value="3"/>
+                                <DataTrigger Binding="{Binding IsAzureAvailable}" Value="False">
+                                    <Setter Property="ToolTip" Value="Brak dostępu do usług Azure Storage"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TabControl.Style>
-                </TabControl>
+                    </c:AutoGreyableImage.Style>
+                </c:AutoGreyableImage>
             </Grid>
+            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                  Margin="30,0,0,0" Grid.Row="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="0" Margin="6,0,0,0" Orientation="Horizontal">
+                        <RadioButton Content=" Zasoby multimedialne " x:Name="MediaElementsRadioButton" Margin="0,0,28,5">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource ContentMenuRadioButtonStyle}">
+                                    <Setter Property="IsChecked" Value="True"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsShowingCreatorMediaElements}" Value="True">
+                                            <Setter Property="IsChecked" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                        </RadioButton>
+                        <RadioButton Content=" Twórcy " Margin="0,0,0,5" x:Name="CreatorsRadioButton"
+                                     Style="{StaticResource ContentMenuRadioButtonStyle}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Margin="6,3,0,0" Grid.ColumnSpan="2">
+                        <Rectangle x:Name="MediaElementsMenuRectangle" Fill="White" 
+                                   StrokeThickness="0" HorizontalAlignment="Left" Height="4" Panel.ZIndex="1"
+                                   Width="{Binding ElementName=MediaElementsRadioButton, Path=ActualWidth}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,0,15,0"
+                                Height="{Binding ElementName=MediaElementsRadioButton, Path=ActualHeight}" FlowDirection="RightToLeft">
+                        <Button x:Name="RefreshButton" Style="{StaticResource MainButtonStyle}"
+                                ToolTip="Zaktualizuj bibliotekę" Width="37" Height="30"
+                                Command="{Binding RefreshCommand}">
+                            <Viewbox Margin="2,4,4,4">
+                                <Path Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=Foreground}" StrokeLineJoin="Miter"
+                                      Data="M 12 0 L 8 4 L 12 8 L 12 5 C 15.859 5 19 8.14 19 12 C 19 12.88 18.82925 13.720094 18.53125 14.496094 L 20.046875 16.009766 C 20.651875 14.800766 21 13.442 21 12 C 21 7.038 16.963 3 12 3 L 12 0 z M 3.953125 7.9902344 C 3.348125 9.1992344 3 10.558 3 12 C 3 16.962 7.037 21 12 21 L 12 24 L 16 20 L 12 16 L 12 19 C 8.141 19 5 15.86 5 12 C 5 11.12 5.17075 10.279906 5.46875 9.5039062 L 3.953125 7.9902344 z"/>
+                            </Viewbox>
+                        </Button>
+                        <Button x:Name="ReportButton" Style="{StaticResource MainButtonStyle}"
+                                ToolTip="Pokaż raport" Width="37" Height="30" Click="ReportButton_Click">
+                            <Image Margin="3,2,3,4" Source="Icons/ReportWhite.png"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Border Grid.Row="2" Width="420" Height="250" CornerRadius="20"
+                Background="White" Visibility="Hidden" x:Name="ReportPanel">
+            <Grid Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="1" Grid.Column="0" FlowDirection="LeftToRight"
+                        Orientation="Horizontal" Margin="20,0,0,0">
+                    <Image Source="Icons/library.png" Margin="6,4,6,10.5"/>
+                    <TextBlock Text="Ilość elementów dostępnych/ogółem:" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="0" FlowDirection="LeftToRight"
+                        Orientation="Horizontal" Margin="20,0,0,0">
+                    <Image Source="Icons/loudspeaker.png" Margin="6,7,5,7"/>
+                    <TextBlock Text="Ilość płyt CD dostępnych/ogółem:" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="3" Grid.Column="0" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="20,0,0,0">
+                    <Image Source="Icons/clapperboard.png" Margin="6,8,8,10"/>
+                    <TextBlock Text="Ilość płyt DVD dostępnych/ogółem:" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="4" Grid.Column="0" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="20,0,0,0">
+                    <Image Source="Icons/bookShelf.png" Margin="6,7,5,7"/>
+                    <TextBlock Text="Ilość książek dostępnych/ogółem:" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="5" Grid.Column="0" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="20,0,0,0">
+                    <Image Source="Icons/creator.png" Margin="6,7,5,7"/>
+                    <TextBlock Text="Liczba twórców w bazie:" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="2" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="45,0,0,0">
+                    <TextBlock Text="{Binding AvailableMediaElementsCount}" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="{Binding MediaElementsCount}" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="2" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="45,0,0,0">
+                    <TextBlock Text="{Binding AvailableCDsCount}" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="{Binding CDsCount}" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="3" Grid.Column="2" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="45,0,0,0">
+                    <TextBlock Text="{Binding AvailableDVDsCount}" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="{Binding DVDsCount}" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="4" Grid.Column="2" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="45,0,0,0">
+                    <TextBlock Text="{Binding AvailableBooksCount}" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="/" VerticalAlignment="Center" FontSize="16"/>
+                    <TextBlock Text="{Binding BooksCount}" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+                <StackPanel Grid.Row="5" Grid.Column="2" FlowDirection="LeftToRight"
+                            Orientation="Horizontal" Margin="45,0,0,0">
+                    <TextBlock Text="{Binding CreatorsCount}" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+            </Grid>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Margin" Value="330,0,0,0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=CreatorsRadioButton, Path=IsChecked}" Value="True">
+                            <Setter Property="Margin" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+        <Grid Grid.Row="2" Panel.ZIndex="-1" x:Name="ContentGrid">
+            <TabControl x:Name="MainTabControl" Background="Transparent"
+                        BorderThickness="0" Margin="-1.5,-3,-1.5,-1.5" Grid.Row="0">
+                <TabItem Visibility="Collapsed" x:Name="MediaElementsTabItem">
+                    <Frame Source="MediaElementsPage.xaml"/>
+                </TabItem>
+                <TabItem Visibility="Collapsed" x:Name="CreatorsTabItem">
+                    <Frame Source="CreatorsPage.xaml"/>
+                </TabItem>
+                <TabControl.Style>
+                    <Style TargetType="TabControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=MediaElementsRadioButton, Path=IsChecked}" Value="True">
+                                <Setter Property="SelectedIndex" Value="0"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=CreatorsRadioButton, Path=IsChecked}" Value="True">
+                                <Setter Property="SelectedIndex" Value="1"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabControl.Style>
+            </TabControl>
         </Grid>
         <Image x:Name="MainPanelImage" Stretch="UniformToFill" 
                Panel.ZIndex="-2" Grid.Row="2"
-               Opacity="0.7"/>
+               Opacity="1">
+            <Image.Style>
+                <Style TargetType="Image">
+                    <Setter Property="Effect" Value="{x:Null}"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MainTabControl, Path=SelectedIndex}" Value="1">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <BlurEffect Radius="30"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Margin" Value="-15,-10,-15,-10"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
     </Grid>
 </Window>

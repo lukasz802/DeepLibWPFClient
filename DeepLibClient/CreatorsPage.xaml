@@ -1,0 +1,352 @@
+﻿<Page x:Class="DeepLibClient.BooksPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DeepLibClient"
+      xmlns:c="clr-namespace:DeepLibClient.Contols"
+      FontFamily="/Fonts/RobotoCondensed-Light.ttf #Roboto Light"
+      mc:Ignorable="d" SnapsToDevicePixels="True"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CreatorsPage">
+    <Page.Resources>
+        <Style x:Key="MediaElementInfoTextBlock" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,6,12,6"/>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{DynamicResource CreatorsDetailsPanelColorBrush}" Margin="-1,0,-1,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Viewbox Height="180">
+                    <Grid Margin="10,23,23,23">
+                        <Path Data="M0,86c0,-47.49649 38.50351,-86 86,-86c47.49649,0 86,38.50351 86,86c0,47.49649 -38.50351,86 -86,86c-47.49649,0 -86,-38.50351 -86,-86zM86,165.12c43.69677,0 79.12,-35.42323 79.12,-79.12c0,-43.69677 -35.42323,-79.12 -79.12,-79.12c-43.69677,0 -79.12,35.42323 -79.12,79.12c0,43.69677 35.42323,79.12 79.12,79.12z">
+                            <Path.Fill>
+                                <SolidColorBrush Color="White"
+                                                 Opacity="0.2"/>
+                            </Path.Fill>
+                        </Path>
+                        <Path Data="M86.00043,47.2462c-13.6525,0 -24.725,11.0725 -24.725,24.725c0,13.6525 11.0725,24.725 24.725,24.725c13.6525,0 24.725,-11.0725 24.725,-24.725c0,-13.6525 -11.0725,-24.725 -24.725,-24.725zM86.00043,53.6962c10.105,0 18.275,8.17 18.275,18.275c0,10.105 -8.17,18.275 -18.275,18.275c-10.105,0 -18.275,-8.17 -18.275,-18.275c0,-10.105 8.17,-18.275 18.275,-18.275zM86.00043,105.2962c-17.63,0 -33.96916,9.56708 -42.67666,24.83208c-0.86,1.505 -0.32334,3.54708 1.28916,4.40708c0.5375,0.3225 1.075,0.43042 1.6125,0.43042c1.075,0 2.25708,-0.5375 2.79458,-1.6125c7.525,-13.33 21.71542,-21.60708 36.98042,-21.60708c15.265,0 29.455,8.27708 37.0875,21.60708c0.86,1.505 2.79458,2.04208 4.40708,1.18208c1.505,-0.86 2.04208,-2.79458 1.18208,-4.40708c-8.7075,-15.265 -25.04666,-24.83208 -42.67666,-24.83208z">
+                            <Path.Fill>
+                                <SolidColorBrush Color="White"
+                                                 Opacity="0.2"/>
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+                </Viewbox>
+            </Grid>
+            <Grid Grid.Column="1" Margin="0,15,0,15">
+                <Grid Margin="0,0,50,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" FontSize="35" Foreground="White"
+                                   Text="{Binding ElementName=CreatorsListBox, Path=SelectedItem.Name}" Margin="0,0,10,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextTrimming" Value="None"/>
+                                <Setter Property="Grid.Column" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=CreatorsListBox, Path=SelectedItem.Surname}" Value="{x:Null}">
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="Grid.Column" Value="1"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Grid.Column="1" FontSize="35" Foreground="White"
+                                   Text="{Binding ElementName=CreatorsListBox, Path=SelectedItem.Surname}" 
+                                   TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                    <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal" Margin="0,2,0,0" 
+                                Grid.Row="1">
+                        <TextBlock FontSize="16" Foreground="White" Margin="0,0,5,0"
+                                   Text="Zasobów w bibliotece:"/>
+                        <TextBlock FontSize="16" Foreground="White"
+                                   Text="{Binding ElementName=CreatorsListBox, Path=SelectedItem.MediaElements.Count}"/>
+                    </StackPanel>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Height="32" VerticalAlignment="Bottom" ToolTip="Pokaż wszystkiego zasoby multimedialne pochodzące od tego twórcy" Grid.Column="0"
+                                HorizontalAlignment="Left" Margin="-14,0,30,0" Command="{Binding CreatorMediaElementsCommand}" CommandParameter="{Binding ElementName=CreatorsListBox, Path=SelectedItem}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid>
+                                                    <Border x:Name="bd" CornerRadius="16"
+                                                            Background="Transparent"/>
+                                                    <Grid Margin="12,0,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock x:Name="tb" Margin="6,0,20,0" FontSize="16" VerticalAlignment="Center"
+                                                                   Text="Zasoby multimedialne" Foreground="White" Grid.Column="1" HorizontalAlignment="Left"/>
+                                                        <Viewbox Margin="5.0">
+                                                            <Path Fill="{Binding ElementName=tb, Path=Foreground}"
+                                                                  Data="M19.59,11.52c-4.44,0 -8.07,3.63 -8.07,8.07v152.835c0,4.425 3.63,8.055 8.07,8.055h45.315c1.53,0 2.97,-0.405 4.2,-1.095c1.14,0.675 2.445,1.095 3.855,1.095h46.08c1.455,0 2.805,-0.435 3.975,-1.155c1.2,0.72 2.595,1.155 4.08,1.155h45.33c4.425,0 8.055,-3.195 8.055,-7.68v-153.21c0,-4.44 -3.63,-8.07 -8.055,-8.07h-45.33c-4.425,0 -8.055,3.63 -8.055,8.07v26.49h-46.08v-26.49c0,-4.44 -3.63,-8.07 -8.055,-8.07zM19.59,19.2h45.315c0.165,0 0.375,0.21 0.375,0.39v153.21c0,-0.645 -0.21,0 -0.375,0h-45.315c-0.18,0 -0.39,-0.21 -0.39,-0.375v-152.835c0,-0.18 0.21,-0.39 0.39,-0.39zM127.095,19.2h45.33c0.165,0 0.375,0.21 0.375,0.39v153.21c0,-0.645 -0.21,0 -0.375,0h-45.33c-0.165,0 -0.375,-0.21 -0.375,-0.375v-152.835c0,-0.18 0.21,-0.39 0.375,-0.39zM30.72,42.24c-1.38,-0.015 -2.67,0.705 -3.375,1.905c-0.69,1.2 -0.69,2.67 0,3.87c0.705,1.2 1.995,1.92 3.375,1.905h23.04c1.38,0.015 2.67,-0.705 3.375,-1.905c0.69,-1.2 0.69,-2.67 0,-3.87c-0.705,-1.2 -1.995,-1.92 -3.375,-1.905zM138.24,42.24c-1.38,-0.015 -2.67,0.705 -3.375,1.905c-0.69,1.2 -0.69,2.67 0,3.87c0.705,1.2 1.995,1.92 3.375,1.905h23.04c1.38,0.015 2.67,-0.705 3.375,-1.905c0.69,-1.2 0.69,-2.67 0,-3.87c-0.705,-1.2 -1.995,-1.92 -3.375,-1.905zM72.96,53.76h46.08v119.04h-46.08zM84.48,76.8c-1.38,-0.015 -2.67,0.705 -3.375,1.905c-0.69,1.2 -0.69,2.67 0,3.87c0.705,1.2 1.995,1.92 3.375,1.905h23.04c1.38,0.015 2.67,-0.705 3.375,-1.905c0.69,-1.2 0.69,-2.67 0,-3.87c-0.705,-1.2 -1.995,-1.92 -3.375,-1.905zM30.72,130.56c-1.38,-0.015 -2.67,0.705 -3.375,1.905c-0.69,1.2 -0.69,2.67 0,3.87c0.705,1.2 1.995,1.92 3.375,1.905h23.04c1.38,0.015 2.67,-0.705 3.375,-1.905c0.69,-1.2 0.69,-2.67 0,-3.87c-0.705,-1.2 -1.995,-1.92 -3.375,-1.905zM138.24,130.56c-1.38,-0.015 -2.67,0.705 -3.375,1.905c-0.69,1.2 -0.69,2.67 0,3.87c0.705,1.2 1.995,1.92 3.375,1.905h23.04c1.38,0.015 2.67,-0.705 3.375,-1.905c0.69,-1.2 0.69,-2.67 0,-3.87c-0.705,-1.2 -1.995,-1.92 -3.375,-1.905zM30.72,145.92c-1.38,-0.015 -2.67,0.705 -3.375,1.905c-0.69,1.2 -0.69,2.67 0,3.87c0.705,1.2 1.995,1.92 3.375,1.905h23.04c1.38,0.015 2.67,-0.705 3.375,-1.905c0.69,-1.2 0.69,-2.67 0,-3.87c-0.705,-1.2 -1.995,-1.92 -3.375,-1.905zM138.24,145.92c-1.38,-0.015 -2.67,0.705 -3.375,1.905c-0.69,1.2 -0.69,2.67 0,3.87c0.705,1.2 1.995,1.92 3.375,1.905h23.04c1.38,0.015 2.67,-0.705 3.375,-1.905c0.69,-1.2 0.69,-2.67 0,-3.87c-0.705,-1.2 -1.995,-1.92 -3.375,-1.905zM84.48,149.76c-2.115,0 -3.84,1.725 -3.84,3.84c0,2.115 1.725,3.84 3.84,3.84h23.235c-0.105,-1.275 -0.195,-2.535 -0.195,-3.84c0,-1.305 0.09,-2.565 0.195,-3.84z"/>
+                                                        </Viewbox>
+                                                    </Grid>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="bd" Property="Background">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush Color="White"
+                                                                                 Opacity="1.0"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter TargetName="tb" Property="Foreground" 
+                                                                Value="{DynamicResource CreatorsDetailsPanelColorBrush}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Height="32" VerticalAlignment="Bottom" ToolTip="Wyświetl więcej informacji na temat danego twórcy" Grid.Column="1"
+                                HorizontalAlignment="Left" Margin="-14,0,0,0" Command="{Binding CreatorDetailsCommand}" CommandParameter="{Binding ElementName=CreatorsListBox, Path=SelectedItem}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid>
+                                                    <Border x:Name="bd" CornerRadius="16"
+                                                            Background="Transparent"/>
+                                                    <Grid Margin="12,0,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock x:Name="tb" Margin="6,0,20,0" FontSize="16" VerticalAlignment="Center"
+                                                                   Text="Informacje" Foreground="White" Grid.Column="1" HorizontalAlignment="Left"/>
+                                                        <Viewbox Margin="4">
+                                                            <Path Fill="{Binding ElementName=tb, Path=Foreground}"
+                                                                  Data="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 25 11 A 3 3 0 0 0 22 14 A 3 3 0 0 0 25 17 A 3 3 0 0 0 28 14 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 22 23 L 23 23 L 23 36 L 22 36 L 21 36 L 21 38 L 22 38 L 23 38 L 27 38 L 28 38 L 29 38 L 29 36 L 28 36 L 27 36 L 27 21 L 26 21 L 22 21 L 21 21 z"/>
+                                                        </Viewbox>
+                                                    </Grid>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="bd" Property="Background">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush Color="White"
+                                                                                 Opacity="1.0"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter TargetName="tb" Property="Foreground" 
+                                                                Value="{DynamicResource CreatorsDetailsPanelColorBrush}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="Height" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=CreatorsListBox, Path=SelectedItem}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="180" Duration="0:0:0.12" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="0" Duration="0:0:0.12" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
+        <c:AutoSizableListBox x:Name="CreatorsListBox" HorizontalAlignment="Stretch" Grid.Row="1"
+                              BorderThickness="0" ItemsSource="{Binding CreatorsList}"
+                              Background="Transparent" ScrollViewer.VerticalScrollBarVisibility ="Auto"
+                              Margin="-1,0,-1,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.CanContentScroll="False" SizeChanged="CreatorsListBox_SizeChanged">
+            <c:AutoSizableListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" Margin="15,-15,18,15"/>
+                </ItemsPanelTemplate>
+            </c:AutoSizableListBox.ItemsPanel>
+            <c:AutoSizableListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="150">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="150"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="0" VerticalAlignment="Center" Source="Icons/creatorCover.png" 
+                               Margin="40" Stretch="Uniform" HorizontalAlignment="Center"/>
+                        <Grid Grid.Row="1" HorizontalAlignment="Center"
+                              VerticalAlignment="Center" Margin="0,-30,0,10">
+                            <Grid Margin="7.5,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="CreatorName" VerticalAlignment="Center"
+                                           Text="{Binding Name}" Margin="0,0,4,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextTrimming" Value="None"/>
+                                            <Setter Property="Grid.Column" Value="0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Surname}" Value="{x:Null}">
+                                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                                    <Setter Property="Grid.Column" Value="1"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock x:Name="CreatorSurname" Grid.Column="1" VerticalAlignment="Center"
+                                           Text="{Binding Surname}" TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Column="2" VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </c:AutoSizableListBox.ItemTemplate>
+            <c:AutoSizableListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="FontSize" Value="17"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <ScaleTransform/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Grid x:Name="Bd" Margin="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=c:AutoSizableListBox}, Path=AutoSizableMargin}"
+                                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent">
+                                    <Ellipse Fill="{TemplateBinding Background}"
+                                             Margin="33" Name="Ell">
+                                    </Ellipse>
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                      Height="{Binding ElementName=Bd, Path=Height}"
+                                                      HorizontalAlignment="Center"/>
+                                    <Grid.Triggers>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard TargetName="Ell">
+                                                        <DoubleAnimation Storyboard.TargetProperty="Width" 
+                                                                         From="0" To="82" Duration="0:0:0.1"/>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Height" 
+                                                                         From="0" To="82" Duration="0:0:0.1"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                    </Grid.Triggers>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FF6C6C6C"
+                                                     Opacity="0.55"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource MenuActiveListColorBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource MenuActiveListColorBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FF4E8093"
+                                                     Opacity="1.0"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="White"/>
+                        </MultiTrigger>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetProperty="LayoutTransform.ScaleY" From="0" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </c:AutoSizableListBox.ItemContainerStyle>
+        </c:AutoSizableListBox>
+    </Grid>
+</Page>
